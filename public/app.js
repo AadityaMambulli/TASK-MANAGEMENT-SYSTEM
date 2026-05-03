@@ -49,29 +49,43 @@ function renderTasks() {
 
 // ─── CREATE TASK ───────────────────────────────────
 async function createTask() {
-  const title    = document.getElementById('taskTitle').value.trim();
-  const desc     = document.getElementById('taskDesc').value.trim();
-  const priority = document.getElementById('taskPriority').value;
+  const title    = document.getElementById('taskTitle').value.trim()
+  const desc     = document.getElementById('taskDesc').value.trim()
+  const priority = document.getElementById('taskPriority').value
+
+  console.log('Title:', title)        // check if input is being read
+  console.log('Desc:', desc)
+  console.log('Priority:', priority)
 
   if (!title) {
-    alert('Please enter a task title!');
-    return;
+    alert('Please enter a task title!')
+    return
   }
 
   try {
-    const res = await fetch(API, {
+    console.log('Sending request to API...')
+
+    const res = await fetch('/api/tasks', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ title, description: desc, priority })
-    });
-    const json = await res.json();
+    })
+
+    console.log('Response status:', res.status)  // check status code
+
+    const json = await res.json()
+
+    console.log('Response data:', json)           // check what came back
+
     if (json.success) {
-      document.getElementById('taskTitle').value = '';
-      document.getElementById('taskDesc').value  = '';
-      loadTasks();
+      document.getElementById('taskTitle').value = ''
+      document.getElementById('taskDesc').value  = ''
+      loadTasks()
+    } else {
+      console.log('API returned error:', json.error)
     }
   } catch (err) {
-    alert('Failed to create task');
+    console.log('Fetch failed completely:', err)
   }
 }
 
