@@ -9,7 +9,9 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 // Middleware
-app.use(cors());
+app.use(cors({
+  origin: 'https://task-management-frontend-gamma-indol.vercel.app'
+}))
 app.use(express.json()); // lets us read JSON from requests
 app.use(express.static(path.join(__dirname, 'public'))); // serves frontend files
 
